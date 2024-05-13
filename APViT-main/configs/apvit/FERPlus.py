@@ -14,7 +14,7 @@ model = dict(
         type='IRSE',
         input_size=(112, 112),
         num_layers=50,
-        pretrained='../../../input/backbone/backbone_ir50_ms1m_epoch120.pth',
+        pretrained="./weights/backbone_ir50_ms1m_epoch120.pth",#'../../../input/backbone/backbone_ir50_ms1m_epoch120.pth'
         mode='ir',
         return_index=[2],   # only use the first 3 stages
         return_type='Tuple',
@@ -22,20 +22,20 @@ model = dict(
     convert=None,
     vit=dict(
         type='PoolingViT',
-        pretrained='../../../input/vit-small/vit_small_p16_224-15ec54c9.pth',
+        pretrained="./weights/vit_small_p16_224-15ec54c9.pth",#'../../../input/vit-small/vit_small_p16_224-15ec54c9.pth'
         input_type='feature',
         patch_num=196,
         in_channels=[256],
         attn_method='SUM_ABS_1',
         sum_batch_mean=False,
-        cnn_pool_config=dict(keep_num=160, exclude_first=False),
-        vit_pool_configs=dict(keep_rates=[1.] * 4 + [0.9] * 4, exclude_first=True, attn_method='SUM'),  # None by default
+        cnn_pool_config=dict(keep_num=40, exclude_first=False),
+        vit_pool_configs=dict(keep_rates=[1.] * 4 + [0.6] * 4, exclude_first=True, attn_method='SUM'),  # None by default
         depth=8,
         **vit_small,
     ),
     head=dict(
         type='LinearClsHead',
-        num_classes=8,
+        num_classes=6,
         in_channels=768,
         loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
         topk=(1, ))
